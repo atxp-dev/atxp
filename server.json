@@ -1,0 +1,48 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.atxp-dev/atxp",
+  "title": "ATXP — Agent Payment & Wallet Infrastructure",
+  "description": "Autonomous agent payments: wallet, email, web search, image/video/music gen, X search, code exec.",
+  "version": "1.0.0",
+  "websiteUrl": "https://atxp.ai",
+  "repository": {
+    "url": "https://github.com/atxp-dev/atxp",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "atxp",
+      "version": "1.0.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "ATXP_CONNECTION",
+          "description": "ATXP connection string URL (from 'npx atxp agent register' or accounts.atxp.ai)",
+          "isRequired": false,
+          "isSecret": true
+        }
+      ]
+    }
+  ],
+  "_meta": {
+    "keywords": [
+      "agent payment infrastructure",
+      "agent wallet infrastructure",
+      "autonomous agent payments",
+      "pay-as-you-go agent platform",
+      "stripe for AI agents",
+      "agent tools",
+      "web search",
+      "image generation",
+      "video generation",
+      "music generation",
+      "email for agents",
+      "agent identity",
+      "USDC payments",
+      "crypto payments"
+    ]
+  }
+}
