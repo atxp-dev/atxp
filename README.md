@@ -12,21 +12,21 @@ gemini extensions install https://github.com/atxp-dev/gemini-cli-extension
 
 ## Setup
 
-### Option 1: Self-register as an agent (recommended)
+### Option 1: Agent self-registration (recommended)
 
-No browser or human login needed:
+No browser, no human login needed. After installing the extension, just ask your Gemini agent:
 
-```bash
-npx atxp agent register
+```
+Register me on ATXP so I can use paid tools
 ```
 
-This creates an account instantly with:
+The agent calls the `atxp_register` tool, which creates an account instantly with:
 - 10 IOU tokens to start
 - A unique email address
 - An Ethereum wallet
-- A connection string
+- A connection string (saved automatically)
 
-From the connection string, extract the `connection_token` and `account_id` values and enter them when prompted during extension setup.
+No settings to configure — the agent is ready to use all tools immediately.
 
 ### Option 2: Use an existing ATXP account
 
@@ -36,21 +36,33 @@ If you already have an ATXP account from [accounts.atxp.ai](https://accounts.atx
 https://accounts.atxp.ai?connection_token=<YOUR_TOKEN>&account_id=<YOUR_ACCOUNT_ID>
 ```
 
+Enter these when prompted during extension setup. This enables both local tools and remote MCP proxy tools.
+
 ## Available Tools
 
 Once configured, these tools are available to your Gemini agent:
 
+### Local Tools (always available after registration)
+
 | Tool | Description |
 |------|-------------|
+| **Register** | Self-register as an ATXP agent |
+| **Balance** | Check account balance |
+| **Fund** | Get funding options (crypto + payment link) |
 | **Search** | Real-time web search |
-| **Browse** | Fetch and read web page content |
-| **Crawl** | Crawl websites and extract structured data |
-| **Research** | Deep multi-source research and synthesis |
 | **Image** | AI image generation |
 | **Video** | AI video generation |
 | **Music** | AI music generation |
 | **X Search** | Live X/Twitter search |
 | **Email** | Send and receive emails |
+
+### Remote MCP Tools (requires settings)
+
+| Tool | Description |
+|------|-------------|
+| **Browse** | Fetch and read web page content |
+| **Crawl** | Crawl websites and extract structured data |
+| **Research** | Deep multi-source research and synthesis |
 | **Code** | Execute code in a sandbox |
 | **File Store** | Persistent cloud file storage |
 
@@ -78,13 +90,13 @@ The agent uses the appropriate ATXP tool automatically.
 
 ## Managing Your Account
 
-Use the ATXP CLI to manage your account:
+Use the built-in tools or the ATXP CLI:
 
 ```bash
-npx atxp balance          # Check balance
-npx atxp fund             # Show funding options
-npx atxp transactions     # View transaction history
-npx atxp whoami           # Show account info
+npx atxp@latest balance          # Check balance
+npx atxp@latest fund             # Show funding options
+npx atxp@latest transactions     # View transaction history
+npx atxp@latest whoami           # Show account info
 ```
 
 ## Billing

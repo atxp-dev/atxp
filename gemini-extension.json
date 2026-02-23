@@ -2,7 +2,12 @@
   "name": "atxp",
   "version": "1.0.0",
   "description": "Give your AI agent a wallet, email, and access to paid MCP tools — web search, image/video/music generation, X search, code execution, file storage, and more. Self-register in one command, pay per use with USDC.",
+  "contextFileName": "GEMINI.md",
   "mcpServers": {
+    "atxp": {
+      "command": "node",
+      "args": ["${extensionPath}/dist/server.js"]
+    },
     "atxp-search": {
       "httpUrl": "https://accounts.atxp.ai?connection_token=${ATXP_CONNECTION_TOKEN}&account_id=${ATXP_ACCOUNT_ID}&server=search.mcp.atxp.ai"
     },
@@ -40,13 +45,13 @@
   "settings": [
     {
       "name": "Connection Token",
-      "description": "Your ATXP connection token (from 'npx atxp agent register' or https://accounts.atxp.ai). This is the 'connection_token' parameter from your connection string.",
+      "description": "Optional — your ATXP connection token. Leave blank to self-register as an agent using the atxp_register tool.",
       "envVar": "ATXP_CONNECTION_TOKEN",
       "sensitive": true
     },
     {
       "name": "Account ID",
-      "description": "Your ATXP account ID (starts with 'atxp_acct_'). This is the 'account_id' parameter from your connection string.",
+      "description": "Optional — your ATXP account ID (starts with 'atxp_acct_'). Leave blank to self-register as an agent.",
       "envVar": "ATXP_ACCOUNT_ID"
     }
   ]
