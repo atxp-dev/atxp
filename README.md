@@ -7,14 +7,16 @@ Give your Gemini CLI agent a wallet, email, and instant access to paid MCP tools
 ## Install
 
 ```bash
-gemini extensions install https://github.com/atxp-dev/gemini-cli-extension
+gemini extensions install https://github.com/atxp-dev/atxp
 ```
+
+> **Note:** After installing, start a new Gemini CLI session for the extension tools to load. Extensions installed mid-session aren't hot-reloaded.
 
 ## Setup
 
 ### Option 1: Agent self-registration (recommended)
 
-No browser, no human login needed. After installing the extension, just ask your Gemini agent:
+No browser, no human login needed. After installing the extension, start a new session and ask your Gemini agent:
 
 ```
 Register me on ATXP so I can use paid tools
