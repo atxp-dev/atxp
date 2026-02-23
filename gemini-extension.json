@@ -6,7 +6,7 @@
   "mcpServers": {
     "atxp": {
       "command": "node",
-      "args": ["${extensionPath}/dist/server.js"]
+      "args": ["${extensionPath}/dist/server.bundle.js"]
     },
     "atxp-search": {
       "httpUrl": "https://accounts.atxp.ai?connection_token=${ATXP_CONNECTION_TOKEN}&account_id=${ATXP_ACCOUNT_ID}&server=search.mcp.atxp.ai"
