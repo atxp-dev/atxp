@@ -1,6 +1,6 @@
 # ATXP — Gemini CLI Extension
 
-Give your Gemini CLI agent a wallet, email, and instant access to paid MCP tools — web search, image/video/music generation, X/Twitter search, code execution, file storage, and more.
+Give your Gemini CLI agent a wallet, email, phone number, and instant access to paid MCP tools — web search, image/video/music generation, X/Twitter search, SMS, voice calls, code execution, file storage, and more.
 
 [ATXP](https://atxp.ai) (Agent Transaction Protocol) lets AI agents pay for their own tools and services without managing API keys. Self-register in one command, pay per use.
 
@@ -46,17 +46,15 @@ Once configured, these tools are available to your Gemini agent:
 
 ### Local Tools (always available after registration)
 
-| Tool | Description |
-|------|-------------|
-| **Register** | Self-register as an ATXP agent |
-| **Balance** | Check account balance |
-| **Fund** | Get funding options (crypto + payment link) |
-| **Search** | Real-time web search |
-| **Image** | AI image generation |
-| **Video** | AI video generation |
-| **Music** | AI music generation |
-| **X Search** | Live X/Twitter search |
-| **Email** | Send and receive emails |
+| Category | Tools | Description |
+|----------|-------|-------------|
+| **Account** | Register, Login, Whoami, Balance, Fund, Transactions | Self-register, check balance, get funding options |
+| **Search** | Web Search, X/Twitter Search | Real-time web and social search |
+| **Media** | Image, Video, Music | AI generation (returns URLs) |
+| **Email** | Inbox, Read, Send, Reply, Search, Delete, Attachments, Username | Full email with @atxp.email address |
+| **Phone** | Register, SMS, Send SMS, Voice Call, Call History, Search | SMS and AI-powered voice calls |
+| **Contacts** | Add, List, Show, Edit, Remove, Search, Push, Pull | Local contacts with cloud sync |
+| **Agents** | Create, List | Manage sub-agents |
 
 ### Remote MCP Tools (requires settings)
 
@@ -67,6 +65,7 @@ Once configured, these tools are available to your Gemini agent:
 | **Research** | Deep multi-source research and synthesis |
 | **Code** | Execute code in a sandbox |
 | **File Store** | Persistent cloud file storage |
+| **Phone** | SMS, voice calls via MCP proxy |
 
 ## Usage
 
@@ -78,6 +77,10 @@ Search the web for the latest AI research papers
 
 ```
 Generate an image of a sunset over mountains
+```
+
+```
+Send an SMS to +1234567890 saying "Hello from my AI agent"
 ```
 
 ```
@@ -103,7 +106,18 @@ npx atxp@latest whoami           # Show account info
 
 ## Billing
 
-All tools are pay-per-use, billed to your ATXP account in USDC. Costs are small — typically $0.001 to $0.05 per tool call. No subscriptions, no API keys to manage.
+All tools are pay-per-use, billed to your ATXP account in USDC. Typical costs:
+
+| Action | Cost |
+|--------|------|
+| Web/X search, image gen | $0.001–$0.05 |
+| Send email | $0.01 |
+| Send SMS | $0.05 |
+| Voice call | $0.10 |
+| Claim email username | $1.00 |
+| Register phone number | $2.00 |
+
+No subscriptions, no API keys to manage.
 
 ## Links
 
