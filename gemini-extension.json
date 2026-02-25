@@ -6,7 +6,8 @@
   "mcpServers": {
     "atxp": {
       "command": "node",
-      "args": ["${extensionPath}/dist/server.bundle.js"]
+      "args": ["${extensionPath}${/}dist${/}server.bundle.js"],
+      "cwd": "${extensionPath}"
     },
     "atxp-search": {
       "httpUrl": "https://accounts.atxp.ai?connection_token=${ATXP_CONNECTION_TOKEN}&account_id=${ATXP_ACCOUNT_ID}&server=search.mcp.atxp.ai"
@@ -40,6 +41,9 @@
     },
     "atxp-research": {
       "httpUrl": "https://accounts.atxp.ai?connection_token=${ATXP_CONNECTION_TOKEN}&account_id=${ATXP_ACCOUNT_ID}&server=research.mcp.atxp.ai"
+    },
+    "atxp-phone": {
+      "httpUrl": "https://accounts.atxp.ai?connection_token=${ATXP_CONNECTION_TOKEN}&account_id=${ATXP_ACCOUNT_ID}&server=phone.mcp.atxp.ai"
     }
   },
   "settings": [

@@ -20900,8 +20900,15 @@ server.tool("atxp_balance", "Check ATXP account balance across all chains. Free 
   const output = runAtxp("balance");
   return { content: [{ type: "text", text: output }] };
 });
-server.tool("atxp_fund", "Show all funding options: crypto deposit addresses (USDC on Base, World, Polygon) and a shareable Stripe payment link (for agent accounts). Free to call.", { amount: external_exports.number().optional().describe("Suggested payment link amount in USD (1-1000, default 10)") }, async ({ amount }) => {
-  const args = amount ? `fund --amount ${amount}` : "fund";
+server.tool("atxp_fund", "Show all funding options: crypto deposit addresses (USDC on Base, Solana) and a shareable Stripe payment link. Use --amount to request a specific payment link amount. Free to call.", {
+  amount: external_exports.number().optional().describe("Suggested payment link amount in USD (1-1000, default 10)"),
+  open: external_exports.boolean().optional().describe("Open the payment link in a browser")
+}, async ({ amount, open }) => {
+  let args = "fund";
+  if (amount)
+    args += ` --amount ${amount}`;
+  if (open)
+    args += " --open";
   const output = runAtxp(args);
   return { content: [{ type: "text", text: output }] };
 });
@@ -20955,6 +20962,154 @@ server.tool("atxp_email_reply", "Reply to an email by message ID. Costs $0.01 pe
 });
 server.tool("atxp_email_search", "Search emails by subject or sender. Free to call.", { query: external_exports.string().describe("Search query for emails") }, async ({ query }) => {
   const output = runAtxp(`email search "${query.replace(/"/g, '\\"')}"`);
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_email_delete", "Delete an email message by ID. Free to call.", { message_id: external_exports.string().describe("The message ID to delete") }, async ({ message_id }) => {
+  const output = runAtxp(`email delete ${message_id}`);
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_email_get_attachment", "Download an email attachment by message ID and attachment index. Free to call.", {
+  message_id: external_exports.string().describe("The message ID containing the attachment"),
+  index: external_exports.number().describe("Attachment index (0-based)")
+}, async ({ message_id, index }) => {
+  const output = runAtxp(`email get-attachment --message ${message_id} --index ${index}`);
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_email_claim_username", "Claim a human-readable email username (e.g., yourname@atxp.email). Costs $1.00.", { username: external_exports.string().describe("The username to claim") }, async ({ username }) => {
+  const output = runAtxp(`email claim-username ${username}`, 3e4);
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_email_release_username", "Release your claimed email username. Free to call.", {}, async () => {
+  const output = runAtxp("email release-username");
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_phone_register", "Register a phone number for SMS and voice calls. Costs $2.00.", { area_code: external_exports.string().optional().describe("Preferred area code (e.g., '415')") }, async ({ area_code }) => {
+  const args = area_code ? `phone register --area-code ${area_code}` : "phone register";
+  const output = runAtxp(args, 6e4);
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_phone_release", "Release your registered phone number. Free to call.", {}, async () => {
+  const output = runAtxp("phone release");
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_phone_configure_voice", "Configure the AI voice agent for inbound/outbound calls. Free to call.", {
+  agent_name: external_exports.string().describe("Name for the voice agent"),
+  voice_description: external_exports.string().describe("Description of the agent's voice personality and behavior")
+}, async ({ agent_name, voice_description }) => {
+  const output = runAtxp(`phone configure-voice --agent-name "${agent_name.replace(/"/g, '\\"')}" --voice-description "${voice_description.replace(/"/g, '\\"')}"`, 3e4);
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_phone_sms", "Check SMS inbox. Free to call.", {
+  unread_only: external_exports.boolean().optional().describe("Only show unread messages"),
+  direction: external_exports.enum(["incoming", "sent"]).optional().describe("Filter by direction")
+}, async ({ unread_only, direction }) => {
+  let args = "phone sms";
+  if (unread_only)
+    args += " --unread-only";
+  if (direction)
+    args += ` --direction ${direction}`;
+  const output = runAtxp(args);
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_phone_read_sms", "Read a specific SMS message by ID. Free to call.", { message_id: external_exports.string().describe("The SMS message ID to read") }, async ({ message_id }) => {
+  const output = runAtxp(`phone read-sms ${message_id}`);
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_phone_send_sms", "Send an SMS message. Costs $0.05. Optionally attach media for MMS.", {
+  to: external_exports.string().describe("Recipient phone number"),
+  body: external_exports.string().describe("Message text"),
+  media: external_exports.string().optional().describe("URL of media to attach (MMS)")
+}, async ({ to, body, media }) => {
+  let args = `phone send-sms --to "${to}" --body "${body.replace(/"/g, '\\"')}"`;
+  if (media)
+    args += ` --media "${media}"`;
+  const output = runAtxp(args, 3e4);
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_phone_get_attachment", "Download an MMS attachment by message ID and index. Free to call.", {
+  message_id: external_exports.string().describe("The message ID containing the attachment"),
+  index: external_exports.number().describe("Attachment index (0-based)")
+}, async ({ message_id, index }) => {
+  const output = runAtxp(`phone get-attachment --message ${message_id} --index ${index}`);
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_phone_call", "Make an AI-powered voice call. Costs $0.10 per call.", {
+  to: external_exports.string().describe("Phone number to call"),
+  instruction: external_exports.string().describe("Instructions for the AI voice agent during the call")
+}, async ({ to, instruction }) => {
+  const output = runAtxp(`phone call --to "${to}" --instruction "${instruction.replace(/"/g, '\\"')}"`, 6e4);
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_phone_calls", "Check call history. Free to call.", { direction: external_exports.enum(["incoming", "sent"]).optional().describe("Filter by direction") }, async ({ direction }) => {
+  const args = direction ? `phone calls --direction ${direction}` : "phone calls";
+  const output = runAtxp(args);
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_phone_read_call", "Read a call transcript and summary by call ID. Free to call.", { call_id: external_exports.string().describe("The call ID to read") }, async ({ call_id }) => {
+  const output = runAtxp(`phone read-call ${call_id}`);
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_phone_search", "Search SMS messages and call history. Free to call.", { query: external_exports.string().describe("Search query") }, async ({ query }) => {
+  const output = runAtxp(`phone search "${query.replace(/"/g, '\\"')}"`);
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_contacts_add", "Add a new contact to the local contacts database. Free to call.", {
+  name: external_exports.string().describe("Contact name"),
+  phone: external_exports.array(external_exports.string()).optional().describe("Phone number(s)"),
+  email: external_exports.array(external_exports.string()).optional().describe("Email address(es)"),
+  notes: external_exports.string().optional().describe("Notes about the contact")
+}, async ({ name, phone, email: email2, notes }) => {
+  let args = `contacts add --name "${name.replace(/"/g, '\\"')}"`;
+  if (phone)
+    phone.forEach((p) => args += ` --phone "${p}"`);
+  if (email2)
+    email2.forEach((e) => args += ` --email "${e}"`);
+  if (notes)
+    args += ` --notes "${notes.replace(/"/g, '\\"')}"`;
+  const output = runAtxp(args);
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_contacts_list", "List all contacts. Free to call.", {}, async () => {
+  const output = runAtxp("contacts list");
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_contacts_show", "Show full details for a contact by ID. Free to call.", { id: external_exports.string().describe("Contact ID") }, async ({ id }) => {
+  const output = runAtxp(`contacts show ${id}`);
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_contacts_edit", "Update a contact's fields. Free to call.", {
+  id: external_exports.string().describe("Contact ID to edit"),
+  name: external_exports.string().optional().describe("New name"),
+  phone: external_exports.array(external_exports.string()).optional().describe("New phone number(s)"),
+  email: external_exports.array(external_exports.string()).optional().describe("New email address(es)"),
+  notes: external_exports.string().optional().describe("New notes")
+}, async ({ id, name, phone, email: email2, notes }) => {
+  let args = `contacts edit ${id}`;
+  if (name)
+    args += ` --name "${name.replace(/"/g, '\\"')}"`;
+  if (phone)
+    phone.forEach((p) => args += ` --phone "${p}"`);
+  if (email2)
+    email2.forEach((e) => args += ` --email "${e}"`);
+  if (notes)
+    args += ` --notes "${notes.replace(/"/g, '\\"')}"`;
+  const output = runAtxp(args);
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_contacts_remove", "Delete a contact by ID. Free to call.", { id: external_exports.string().describe("Contact ID to remove") }, async ({ id }) => {
+  const output = runAtxp(`contacts remove ${id}`);
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_contacts_search", "Search contacts by name, phone, or email. Case-insensitive. Free to call.", { query: external_exports.string().describe("Search query") }, async ({ query }) => {
+  const output = runAtxp(`contacts search "${query.replace(/"/g, '\\"')}"`);
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_contacts_push", "Back up local contacts to the ATXP server. Free to call.", {}, async () => {
+  const output = runAtxp("contacts push");
+  return { content: [{ type: "text", text: output }] };
+});
+server.tool("atxp_contacts_pull", "Restore contacts from the ATXP server. Free to call.", {}, async () => {
+  const output = runAtxp("contacts pull");
   return { content: [{ type: "text", text: output }] };
 });
 server.tool("atxp_agent_create", "Create a new agent account under the logged-in human developer. Requires prior login.", {}, async () => {
