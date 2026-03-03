@@ -2,8 +2,8 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.atxp-dev/atxp",
   "title": "ATXP — Agent Payment & Wallet Infrastructure",
-  "description": "Autonomous agent payments: wallet, email, web search, image/video/music gen, X search, code exec.",
-  "version": "1.21.1",
+  "description": "Agent wallet, email, phone, and 41 paid tools: search, image/video/music gen, SMS, calls.",
+  "version": "1.21.2",
   "websiteUrl": "https://atxp.ai",
   "repository": {
     "url": "https://github.com/atxp-dev/atxp",

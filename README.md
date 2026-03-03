@@ -1,22 +1,47 @@
-# ATXP — Gemini CLI Extension
+# ATXP — Agent Payment & Wallet Infrastructure
 
-Give your Gemini CLI agent a wallet, email, phone number, and instant access to paid MCP tools — web search, image/video/music generation, X/Twitter search, SMS, voice calls, code execution, file storage, and more.
+Give your AI agent a wallet, email, phone number, and instant access to paid MCP tools — web search, image/video/music generation, X/Twitter search, SMS, voice calls, code execution, file storage, and more.
 
-[ATXP](https://atxp.ai) (Agent Transaction Protocol) lets AI agents pay for their own tools and services without managing API keys. Self-register in one command, pay per use.
+[ATXP](https://atxp.ai) (Agent Transaction Protocol) lets AI agents pay for their own tools and services without managing API keys. Self-register in one command, pay per use. Works with any MCP client.
 
 ## Install
+
+### Gemini CLI
 
 ```bash
 gemini extensions install https://github.com/atxp-dev/atxp
 ```
 
-> **Note:** After installing, start a new Gemini CLI session for the extension tools to load. Extensions installed mid-session aren't hot-reloaded.
+> After installing, start a new Gemini CLI session for the extension tools to load.
+
+### Claude Desktop / Cursor / Windsurf
+
+Add to your MCP client config (e.g. `claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "atxp": {
+      "command": "npx",
+      "args": ["-y", "atxp@latest"]
+    }
+  }
+}
+```
+
+### Any MCP Client
+
+```bash
+npx atxp@latest
+```
+
+ATXP runs as a standard MCP server over stdio. Point any MCP-compatible client at the command above.
 
 ## Setup
 
 ### Option 1: Agent self-registration (recommended)
 
-No browser, no human login needed. After installing the extension, start a new session and ask your Gemini agent:
+No browser, no human login needed. Just ask your agent:
 
 ```
 Register me on ATXP so I can use paid tools
@@ -32,19 +57,17 @@ No settings to configure — the agent is ready to use all tools immediately.
 
 ### Option 2: Use an existing ATXP account
 
-If you already have an ATXP account from [accounts.atxp.ai](https://accounts.atxp.ai), extract the values from your connection string:
+If you already have an ATXP account from [accounts.atxp.ai](https://accounts.atxp.ai), set the `ATXP_CONNECTION` environment variable to your connection string, or pass it to the CLI:
 
-```
-https://accounts.atxp.ai?connection_token=<YOUR_TOKEN>&account_id=<YOUR_ACCOUNT_ID>
+```bash
+ATXP_CONNECTION="https://accounts.atxp.ai?connection_token=<TOKEN>&account_id=<ACCOUNT_ID>" npx atxp@latest
 ```
 
-Enter these when prompted during extension setup. This enables both local tools and remote MCP proxy tools.
+For Gemini CLI, enter the token and account ID when prompted during extension setup.
 
 ## Available Tools
 
-Once configured, these tools are available to your Gemini agent:
-
-### Local Tools (always available after registration)
+### Core Tools (41 tools, always available)
 
 | Category | Tools | Description |
 |----------|-------|-------------|
@@ -56,7 +79,7 @@ Once configured, these tools are available to your Gemini agent:
 | **Contacts** | Add, List, Show, Edit, Remove, Search, Push, Pull | Local contacts with cloud sync |
 | **Agents** | Create, List | Manage sub-agents |
 
-### Remote MCP Tools (requires settings)
+### Remote MCP Tools (Gemini CLI extension only, requires settings)
 
 | Tool | Description |
 |------|-------------|
@@ -69,7 +92,7 @@ Once configured, these tools are available to your Gemini agent:
 
 ## Usage
 
-Just ask your Gemini agent naturally:
+Just ask your agent naturally:
 
 ```
 Search the web for the latest AI research papers
@@ -124,6 +147,7 @@ No subscriptions, no API keys to manage.
 - [ATXP Website](https://atxp.ai)
 - [Documentation](https://docs.atxp.ai)
 - [Tool Catalog](https://docs.atxp.ai/tools)
+- [MCP Registry](https://registry.modelcontextprotocol.io/servers/io.github.atxp-dev/atxp)
 - [CLI on npm](https://www.npmjs.com/package/atxp)
 - [Account Portal](https://accounts.atxp.ai)
 
